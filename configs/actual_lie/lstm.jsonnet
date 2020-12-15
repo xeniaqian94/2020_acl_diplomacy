@@ -30,7 +30,7 @@
         "embedder": {
             "tokens": {
                 "embedding_dim": 200,
-                "pretrained_file": "(http://nlp.stanford.edu/data/glove.twitter.27B.zip)#glove.twitter.27B.200d.txt",
+                "pretrained_file": "embedding/glove.twitter.27B.200d.txt",
                 "trainable": false,
                 "type": "embedding"
             }

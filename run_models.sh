@@ -25,7 +25,21 @@ echo "\nHarbringers: Suspected Lie"
 echo "Without Power"
 python diplomacy/models/harbringers.py r n #suspected_lie (receiver lie), no power
 echo "With Power"
-python diplomacy/models/harbringers.py r y #suspected_lie (receiver lie), no power
+python diplomacy/models/harbringers.py r y #suspected_lie (receiver lie), yes power
+
+#Hedging
+echo "\nHedging: Actual Lie"
+echo "Without Power"
+python diplomacy/models/hedging.py s n 'utils/hedging_lexicon.json' #actual_lie (sender lie), no power
+echo "With Power"
+python diplomacy/models/hedging.py s y 'utils/hedging_lexicon.json' #actual_lie (sender lie), yes power
+
+echo "\nHedging: Suspected Lie"
+echo "Without Power"
+python diplomacy/models/hedging.py r n 'utils/hedging_lexicon.json' #suspected_lie (receiver lie), no power
+echo "With Power"
+python diplomacy/models/hedging.py r y 'utils/hedging_lexicon.json' #suspected_lie (receiver lie), yes power
+
 
 echo "Bag of Words Log Reg: Actual Lie"
 #Bag of words
@@ -47,7 +61,6 @@ do
     logdir="${LOG_ROOT}/actual_lie/${name}"
     config="configs/actual_lie/${name}.jsonnet"
     allennlp train -f --include-package diplomacy -s $logdir $config
-    allennlp train -f --include-package diplomacy $config # if not saving model
 done
 
 #Neural models for suspected_lie lie

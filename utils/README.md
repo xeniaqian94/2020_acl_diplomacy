@@ -11,4 +11,4 @@ For VAD and intensity lexicon, please download from the [original source](http:/
 
 For empathy lexicon, please download from the [original source](http://www.wwbp.org/lexica.html). 
 
-Then, place two files `NRC-Emotion-Intensity-Lexicon-v1.txt` and `empathy_lexicon.txt` in this directory. 
+Then, place two files `NRC-Emotion-Intensity-Lexicon-v1.txt`(rename as `intensity_lexicon.txt`) and `empathy_lexicon.txt` in this directory. 

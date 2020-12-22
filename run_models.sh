@@ -27,6 +27,26 @@ python diplomacy/models/harbringers.py r n #suspected_lie (receiver lie), no pow
 echo "With Power"
 python diplomacy/models/harbringers.py r y #suspected_lie (receiver lie), yes power
 
+
+# Power change
+echo "\nHarbringers: Actual Lie"
+echo "With Power"
+python diplomacy/models/harbringers-power-change.py s y #actual_lie (sender lie), yes power
+
+echo "\nHarbringers: Suspected Lie"
+echo "With Power"
+python diplomacy/models/harbringers-power-change.py r y #suspected_lie (receiver lie), yes power
+
+echo "\nBOW: Actual Lie"
+echo "With Power"
+python diplomacy/models/bagofwords-power-change.py s y #actual lie, use power
+
+echo "\nBOW: Suspected Lie"
+echo "With Power"
+python diplomacy/models/bagofwords-power-change.py r y #suspected_lie, use power
+
+
+
 #Hedging
 echo "\nHedging: Actual Lie"
 echo "Without Power"
@@ -69,12 +89,27 @@ echo "With Power"
 python diplomacy/models/hedging.py r y 'utils/intensity_lexicon.json' #suspected_lie (receiver lie), yes power
 
 
+
+#VAD
+echo "\VAD: Actual Lie"
+echo "Without Power"
+python diplomacy/models/hedging.py s n 'utils/NRC-VAD-Lexicon.json' #actual_lie (sender lie), no power
+echo "With Power"
+python diplomacy/models/hedging.py s y 'utils/NRC-VAD-Lexicon.json' #actual_lie (sender lie), yes power
+
+echo "\VAD: Suspected Lie"
+echo "Without Power"
+python diplomacy/models/hedging.py r n 'utils/NRC-VAD-Lexicon.json' #suspected_lie (receiver lie), no power
+echo "With Power"
+python diplomacy/models/hedging.py r y 'utils/NRC-VAD-Lexicon.json' #suspected_lie (receiver lie), yes power
+
+
 echo "Bag of Words Log Reg: Actual Lie"
 #Bag of words
 echo "Without Power"
-python diplomacy/models/bagofwords.py s n #suspected_lie, no power
+python diplomacy/models/bagofwords.py s n #actual lie, no power
 echo "With Power"
-python diplomacy/models/bagofwords.py s y #suspected_lie, use power
+python diplomacy/models/bagofwords.py s y #actual lie, use power
 
 echo "\nBag of Words Log Reg: Suspected Lie:"
 echo "Without Power"

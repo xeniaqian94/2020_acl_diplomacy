@@ -14,7 +14,7 @@ import json
 import sys
 import csv
 
-intensity_lexicon_obj = {"V": [], "A": [], "D": []}
+vad_lexicon_obj = {"V": [], "A": [], "D": []}
 
 threshold = 0.5 if len(sys.argv) == 1 else float(sys.argv[1])
 with open("NRC-VAD-Lexicon.txt", "r") as infile:
@@ -22,12 +22,19 @@ with open("NRC-VAD-Lexicon.txt", "r") as infile:
     next(reader)
     for rows in reader:
         k = str(rows[0])
-        v = float(rows[2])
+
+        v = float(rows[1])
         if v > threshold:
-            intensity_lexicon_obj['V'] += [k]
-            intensity_lexicon_obj['A'] += [k]
-            intensity_lexicon_obj['D'] += [k]
+            vad_lexicon_obj['V'] += [k]
 
-    print(intensity_lexicon_obj)
+        a = float(rows[2])
+        if a > threshold:
+            vad_lexicon_obj['A'] += [k]
 
-json.dump(intensity_lexicon_obj, open("NRC-VAD-Lexicon.json", "w"), indent=2)
+        d = float(rows[3])
+        if d > threshold:
+            vad_lexicon_obj['D'] += [k]
+
+    print(vad_lexicon_obj)
+
+json.dump(vad_lexicon_obj, open("NRC-VAD-Lexicon.json", "w"), indent=2)

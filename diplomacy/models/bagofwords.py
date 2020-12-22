@@ -2,7 +2,7 @@
 import jsonlines
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report
-from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import CountVectorizer # BOW feature extractor
 from sklearn.feature_selection import RFE
 import numpy as np
 from scipy.sparse import csr_matrix
@@ -117,7 +117,7 @@ def log_reg(train, test):
     train = split_xy(train)
     test = split_xy(test)
 
-    #append power to the matrix
+    #append power (skewness) to the matrix
     append_power_x = np.append(X.toarray(), train[0], axis = 1)
     append_power_y = np.append(y.toarray(), test[0], axis = 1)
 

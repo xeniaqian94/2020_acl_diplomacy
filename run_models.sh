@@ -41,6 +41,34 @@ echo "With Power"
 python diplomacy/models/hedging.py r y 'utils/hedging_lexicon.json' #suspected_lie (receiver lie), yes power
 
 
+#Empathy
+echo "\nEmpathy: Actual Lie"
+echo "Without Power"
+python diplomacy/models/hedging.py s n 'utils/empathy_lexicon.json' #actual_lie (sender lie), no power
+echo "With Power"
+python diplomacy/models/hedging.py s y 'utils/empathy_lexicon.json' #actual_lie (sender lie), yes power
+
+echo "\nEmpathy: Suspected Lie"
+echo "Without Power"
+python diplomacy/models/hedging.py r n 'utils/empathy_lexicon.json' #suspected_lie (receiver lie), no power
+echo "With Power"
+python diplomacy/models/hedging.py r y 'utils/empathy_lexicon.json' #suspected_lie (receiver lie), yes power
+
+
+#Tension
+echo "\nTension: Actual Lie"
+echo "Without Power"
+python diplomacy/models/hedging.py s n 'utils/intensity_lexicon.json' #actual_lie (sender lie), no power
+echo "With Power"
+python diplomacy/models/hedging.py s y 'utils/intensity_lexicon.json' #actual_lie (sender lie), yes power
+
+echo "\nTension: Suspected Lie"
+echo "Without Power"
+python diplomacy/models/hedging.py r n 'utils/intensity_lexicon.json' #suspected_lie (receiver lie), no power
+echo "With Power"
+python diplomacy/models/hedging.py r y 'utils/intensity_lexicon.json' #suspected_lie (receiver lie), yes power
+
+
 echo "Bag of Words Log Reg: Actual Lie"
 #Bag of words
 echo "Without Power"

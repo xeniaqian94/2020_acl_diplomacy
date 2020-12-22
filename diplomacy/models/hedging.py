@@ -29,7 +29,8 @@ warnings.filterwarnings("ignore")
 
 
 def spacy_tokenizer(text):
-    return [tok.text for tok in nlp(text)]
+    tokens = [tok.text for tok in nlp(text)]
+    return tokens, " ".join(tokens)
 
 
 # change the format from list of lists into a single list
@@ -52,13 +53,13 @@ def aggregate(dataset):
     return merged
 
 
-def convert_to_binary(dataset):
+def convert_to_binary(dataset, lexicon_file):
     binary_data = []
     matrix = []
 
     ## TODO: convert utils/hedging-resources-master/booster_words.txt etc. into JSON format, than change the line below
-    with open('utils/2015_Diplomacy_lexicon.json') as f:
-        feature_dict = json.loads(f.readline())
+    with open(lexicon_file) as f:
+        feature_dict = json.load(f)# json.loads(f.readline())
     feature_dict['but'] = ['but']
     feature_dict['countries'] = ['austria', 'england', 'france', 'germany', 'italy', 'russia', 'turkey']
 
@@ -78,12 +79,15 @@ def convert_to_binary(dataset):
         # loop through each message, then for each feature group.  If word in message matches the dictionary, add binary feature
         for feature in feature_dict.keys():
             feature_flag = False
-            preprocessed_message = spacy_tokenizer(message['message'].lower())
+            preprocessed_message_tokens, preprocessed_message_concatenated = spacy_tokenizer(message['message'].lower())
             total = 0
-            for word in feature_dict[feature]:
-                if (word in preprocessed_message):
+            for word_or_phrase in feature_dict[feature]:
+                if (word_or_phrase in preprocessed_message_tokens) or (
+                        " " in word_or_phrase and word_or_phrase in preprocessed_message_concatenated):
                     total += 1
                     feature_flag = True
+                    # if feature == "discourse_markers":
+                    #     print("Matching a discourse_markers feature", word_or_phrase, preprocessed_message_concatenated)
             # break
             if feature_flag:
                 binary.append(total)
@@ -128,7 +132,7 @@ def split_xy(data):
     return (X, y)
 
 
-def log_reg(train, test):
+def log_reg(train, test, lexicon_file):
     if TASK == "SENDER":
         corpus = [message['message'].lower() for message in aggregate(train)]
     elif TASK == "RECEIVER":  # for receivers, drop all missing annotations
@@ -136,9 +140,9 @@ def log_reg(train, test):
                   message['receiver_annotation'] != "NOANNOTATION"]
 
     # only used for getting lie/not lie labels
-    train = convert_to_binary(aggregate(train))
+    train = convert_to_binary(aggregate(train), lexicon_file)
     # validation set not used for consistency with neural
-    test = convert_to_binary(aggregate(test))
+    test = convert_to_binary(aggregate(test), lexicon_file)
     train = split_xy(train)
     test = split_xy(test)
 
@@ -165,7 +169,7 @@ def log_reg(train, test):
 
 
 if __name__ == '__main__':
-    if len(sys.argv) == 2 or len(sys.argv) == 3:
+    if len(sys.argv) == 4:
         POWER = "y"
         if sys.argv[1] == 's':
             TASK = "SENDER"
@@ -174,14 +178,15 @@ if __name__ == '__main__':
         else:
             print("Specify s for sender or r for receiver")
             exit()
-        if len(sys.argv) == 3:
-            if sys.argv[2] == 'n':
-                POWER = sys.argv[2]
-            elif sys.argv[2] == 'y':
-                POWER = sys.argv[2]
-            else:
-                print("Specify y for including power and n for not including it e.g.: python bagofwords.py s n")
-                exit()
+
+        if sys.argv[2] == 'n':
+            POWER = sys.argv[2]
+        elif sys.argv[2] == 'y':
+            POWER = sys.argv[2]
+        else:
+            print("Specify y for including power and n for not including it e.g.: python bagofwords.py s n")
+            exit()
+        lexicon_file = sys.argv[3]
     else:
         print("Specify s for sender or r for receiver e.g.:  python harbringers.py s")
         exit()
@@ -199,4 +204,4 @@ if __name__ == '__main__':
     # spacy used for tokenization
     nlp = English()
 
-    log_reg(train, test)
+    log_reg(train, test, lexicon_file)

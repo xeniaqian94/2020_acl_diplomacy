@@ -13,7 +13,7 @@ An alternate representation of the data, by message not by conversation, is avai
 
 **game_score:** the current game score---supply centers---of the sender  (string format that ranges can range from  0 to 18)
 
-**score_delta:** the current game score---supply centers---of the sender minus the game score of the recipient (string format that ranges from -18 to 18)
+**game_score_delta:** the current game score---supply centers---of the sender minus the game score of the recipient (string format that ranges from -18 to 18)
 
 **absolute_message_index:** the index the message is in the entire game, across all dialogs (int format)
 
